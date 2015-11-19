@@ -1,27 +1,32 @@
 var initialLocs = [
   {
-    name: "Unternehmen Mitte", 
-    adress: "Gerbergasse 30, 4001 Basel",
+    title: "Unternehmen Mitte", 
+    text: "test test test",
+    address: "Gerbergasse 30, 4001 Basel",
     loc: {lat: 47.556580, lng: 7.588368}
   },
   { 
-    name: "Irrsinn Bar", 
-    adress: "Rebgasse 43, 4058 Basel",
+    title: "Irrsinn Bar", 
+    text: "test test test",
+    address: "Rebgasse 43, 4058 Basel",
     loc: {lat: 47.559682, lng: 7.595897}
   },
   {
-    name: "Cargobar", 
-    adress: "St. Johanns-Rheinweg 46, 4056 Basel",
+    title: "Cargobar", 
+    text: "test test test",
+    address: "St. Johanns-Rheinweg 46, 4056 Basel",
     loc: {lat: 47.564293, lng: 7.584177}
   },
   { 
-    name: "Paddy Reilly’s", 
-    adress: "Steinentorstrasse 45, 4051 Basel",
+    title: "Paddy Reilly’s", 
+    text: "test test test",
+    address: "Steinentorstrasse 45, 4051 Basel",
     loc: {lat: 47.550941, lng: 7.588073}
   },
   {
-    name: "Mr. Pickwick Pub", 
-    adress: "Steinenvorstadt 13, 4051 Basel",
+    title: "Mr. Pickwick Pub", 
+    text: "test test test",
+    address: "Steinenvorstadt 13, 4051 Basel",
     loc: {lat: 47.553512, lng: 7.589183}
   }
 ];
@@ -38,72 +43,46 @@ function initialize() {
     disableDefaultUI: true,
     styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
   });
-  addMapMarkers();
+  addMapMarkers(initialLocs);
 }
 
-function addMapMarkers() {
-	for (bar in initialLocs) {
+function addMapMarkers(mark) {
+
+  var infoWindow = new google.maps.InfoWindow();
+
+  function createInfoWindow(markInf) {
+    var infoContent = '<div class="info_content"><h4>' + markInf.title + '</h4>' 
+      + '<p>' + markInf.text + '</p><p class="info_address">' + markInf.address + '</p></div>';
+
+    infoWindow.setContent(String(infoContent));
+    infoWindow.open(map, markInf);
+  }
+
+  function deleteMarkers() {
+    for (var i = 0; i < allMarkers.length; i++) {
+      allMarkers[i].setMap(null);
+    }
+    allMarkers = [];
+  }
+
+  for (var i = 0; i < mark.length; i++){
     var marker = new google.maps.Marker({
-      position: initialLocs[bar].loc,
+      position: mark[i].loc,
       map: map,
-      title: initialLocs[bar].name
+      title: mark[i].title,
+      text: mark[i].text,
+      address: mark[i].address
     });
 
-    var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>'+initialLocs[bar].name+'</b>,' +
-      '(last visited June 22, 2009).</p>'+
-      '</div>'+
-      '</div>';
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString
-    });
+    allMarkers.push(marker);
 
-
-    marker.addListener('click', function() {
-      infowindow.open(map, marker);
-    });
+    google.maps.event.addListener(marker, 'click', (function(mark, i) {
+      return function() {
+        createInfoWindow(mark);
+      }
+    })(marker, i));
   }
 }
 
 
 google.maps.event.addDomListener(window, 'load', initialize);
-/*
-  var myLatLng = {lat: 47.556580, lng: 7.588368};
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    animation: google.maps.Animation.DROP,
-    title: 'Unternehmen Mitte'
-  });
-
-  var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>Uluru</b>,' +
-      '(last visited June 22, 2009).</p>'+
-      '</div>'+
-      '</div>';
-
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
-
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });
-}
-
-
-/*model*/
-var locations = {
-	bar_1: {
-		name: 'Unternehmen Mitte',
-		loc: 'lat: 47.556580, lng: 7.588368'
-	}
-}

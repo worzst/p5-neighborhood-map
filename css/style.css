@@ -1,5 +1,39 @@
 html, body, #map-canvas {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	z-index: 0;
+}
+.search-list ul,
+.search {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 400px;
+	background-color: rgba(255, 255, 255, 0.85);
+	z-index: 1;
+}
+
+.search {
+	padding: 15px;
+}
+
+.search input {
+	width: 265px;
+}
+
+.search button {
+	width: 100px;
+}
+
+.search-list ul {
+	margin-right: -100%;
+	padding: 60px 0 20px;
+	height: 100%;
+	overflow-y: auto;
+	z-index: 9;
+}
+
+.search-list ul.show {
+	margin-right: 0;
+}

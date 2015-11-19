@@ -11,6 +11,13 @@
 		
 	</head>
 	<body>
+		<div class="search-list">
+			<div class="search">
+					<input type="text" data-bind="value: searchTerm">
+					<button type="button" data-bind="click: searchLocation">Search</button>
+			</div>
+			<ul class="results"></ul>
+		</div>
 		<div id="map-canvas"></div>
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
